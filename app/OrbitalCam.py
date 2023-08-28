@@ -43,13 +43,8 @@ def OrbitalController(keyboard, mouse, cam_pos, cam_rot, cam_tgt, dt, width, hei
 
 	# clamp X
 
-	if cam_rot.x > pi / 2:
-		cam_rot.x = pi / 2
-	if cam_rot.x < pi / 8:
-		cam_rot.x = pi / 8
-
-
-
+	cam_rot.x = min(cam_rot.x, pi / 2)
+	cam_rot.x = max(cam_rot.x, pi / 8)
 	if keyboard.Down(hg.K_LAlt):
 		if mouse.Down(hg.MB_0):
 			z_value = -mouse.DtY() * 5
@@ -65,11 +60,8 @@ def OrbitalController(keyboard, mouse, cam_pos, cam_rot, cam_tgt, dt, width, hei
 		else:
 			d *= k + 1
 
-		if d < 3:
-			d = 3  # make sure not to come too close to the target
-		if d > 28:
-			d = 28
-
+		d = max(d, 3)
+		d = min(d, 28)
 	if mouse.Down(hg.MB_2):  # scroll viewpoint
 		speed = d * dt_sec * 0.1
 		mat = hg.TransformationMat4(cam_pos, cam_rot)

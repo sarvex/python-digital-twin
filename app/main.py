@@ -32,7 +32,7 @@ url = ""
 try:
 	url = "http://" + socket.gethostbyname('poppy.local') + ":6969"
 except:
-	print(str_error + ": "+url)
+	print(f"{str_error}: {url}")
 
 # initialize  Harfang
 hg.InputInit()
@@ -149,13 +149,7 @@ led_color = 1
 
 timer_requests_not_overload = 0
 
-# if there is no camera add one
-cam = None
-for n in scene.GetAllNodes():
-	if n.GetCamera().IsValid():
-		cam = n
-		break
-
+cam = next((n for n in scene.GetAllNodes() if n.GetCamera().IsValid()), None)
 if cam is None:
 	cam = scene.CreateNode()
 	cam.SetName("Camera")
@@ -218,7 +212,7 @@ def toggle_button(label, value, x, y):
 		mouse_x = median(mousexlist)
 		mouse_y = median(mouseylist)
 		if mouse_x > pos.x - axis_x.x and mouse_x < pos.x + axis_x.x and mouse_y > pos.y - axis_y.y and mouse_y < pos.y + axis_y.y and not has_switched:
-			value = True if not value else False
+			value = not value
 			has_switched = True
 			mousexlist.clear()
 			mouseylist.clear()
